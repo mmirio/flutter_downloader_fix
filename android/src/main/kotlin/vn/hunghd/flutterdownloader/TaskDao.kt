@@ -124,6 +124,28 @@ class TaskDao(private val dbHelper: TaskDbHelper) {
         return result
     }
 
+    fun updateTaskPath(taskId: String, downloadedFilePath: String) {
+        val db = dbHelper.writableDatabase
+        val values = ContentValues()
+        values.put(TaskEntry.COLUMN_NAME_TASK_ID, taskId)
+        values.put(TaskEntry.COLUMN_NAME_FILE_PATH, downloadedFilePath)
+        db.beginTransaction()
+        try {
+            db.update(
+                TaskEntry.TABLE_NAME,
+                values,
+                TaskEntry.COLUMN_NAME_TASK_ID + " = ?",
+                arrayOf(taskId)
+            )
+            db.setTransactionSuccessful()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            db.endTransaction()
+        }
+
+    }
+
     fun updateTask(taskId: String, status: DownloadStatus, progress: Int) {
         val db = dbHelper.writableDatabase
         val values = ContentValues()
