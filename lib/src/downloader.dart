@@ -342,10 +342,7 @@ class FlutterDownloader {
     }
   }
 
-
-  static Future<bool> checkFile({
-    required String taskId
-  }) async {
+  static Future<bool> checkFile({required String taskId}) async {
     assert(_initialized, 'plugin flutter_downloader is not initialized');
     bool? result;
     try {
@@ -364,27 +361,22 @@ class FlutterDownloader {
     return result ?? false;
   }
 
-
-  static Future<bool> checkFileName({
-    required String filename
-  }) async {
+  static Future<DownloadTask?> checkFileName({required String filename}) async {
     assert(_initialized, 'plugin flutter_downloader is not initialized');
 
-
     final escapedFilename = filename.replaceAll("'", "''");
-    final tasks= await loadTasksWithRawQuery(query: "SELECT * FROM task WHERE  filename = '$escapedFilename' ");
+    final tasks = await loadTasksWithRawQuery(
+        query: "SELECT * FROM task WHERE  filename = '$escapedFilename' ");
 
-    if(tasks?.isNotEmpty==true){
-
-      return checkFile(taskId: tasks!.first.taskId);
-
-
-    }else{
-      return false;
+    if (tasks?.isNotEmpty == true) {
+      var task = tasks!.first;
+      if (await checkFile(taskId: task.taskId)) {
+        return task;
+      }
     }
 
+    return null;
   }
-
 
   /// Opens the file downloaded by download task with [taskId]. Returns true if
   /// the downloaded file can be opened, false otherwise.

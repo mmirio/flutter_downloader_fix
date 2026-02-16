@@ -349,6 +349,7 @@ class FlutterDownloaderPlugin : MethodChannel.MethodCallHandler, FlutterPlugin {
     private fun checkFile(call: MethodCall, result: MethodChannel.Result) {
         val taskId: String = call.requireArgument("task_id")
 
+
         val task = taskDao!!.loadTask(taskId)
         if (task != null) {
             if (task.status != DownloadStatus.COMPLETE ) {
