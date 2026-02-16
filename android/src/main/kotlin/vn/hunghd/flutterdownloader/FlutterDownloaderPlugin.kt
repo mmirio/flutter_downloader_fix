@@ -64,6 +64,7 @@ class FlutterDownloaderPlugin : MethodChannel.MethodCallHandler, FlutterPlugin {
             "resume" -> resume(call, result)
             "retry" -> retry(call, result)
             "open" -> open(call, result)
+            "checkFile" -> checkFile(call, result)
             "remove" -> remove(call, result)
             else -> result.notImplemented()
         }
@@ -339,6 +340,28 @@ class FlutterDownloaderPlugin : MethodChannel.MethodCallHandler, FlutterPlugin {
                 WorkManager.getInstance(requireContext()).enqueue(request)
             } else {
                 result.error(invalidStatus, "only failed and canceled task can be retried", null)
+            }
+        } else {
+            result.error(invalidTaskId, "not found task corresponding to given task id", null)
+        }
+    }
+
+    private fun checkFile(call: MethodCall, result: MethodChannel.Result) {
+        val taskId: String = call.requireArgument("task_id")
+
+        val task = taskDao!!.loadTask(taskId)
+        if (task != null) {
+            if (task.status != DownloadStatus.COMPLETE ) {
+                result.success(false)
+            }else{
+                var filename = task.filename
+                if (filename == null) {
+                    filename = task.url.substring(task.url.lastIndexOf("/") + 1, task.url.length)
+                }
+
+                val saveFilePath = task.downloadedFilePath ?:  (task.savedDir + File.separator + filename)
+                val tempFile = File(saveFilePath)
+                result.success(tempFile.exists())
             }
         } else {
             result.error(invalidTaskId, "not found task corresponding to given task id", null)

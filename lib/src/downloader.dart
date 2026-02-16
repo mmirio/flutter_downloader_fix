@@ -342,6 +342,50 @@ class FlutterDownloader {
     }
   }
 
+
+  static Future<bool> checkFile({
+    required String taskId
+  }) async {
+    assert(_initialized, 'plugin flutter_downloader is not initialized');
+    bool? result;
+    try {
+      result = await _channel.invokeMethod<bool>(
+        'checkFile',
+        {'task_id': taskId},
+      );
+
+      if (result == null) {
+        throw const FlutterDownloaderException(message: '`checkFile` returned null');
+      }
+    } on PlatformException catch (err) {
+      _log('Failed to checkFile downloaded file. Reason: ${err.message}');
+    }
+
+    return result ?? false;
+  }
+
+
+  static Future<bool> checkFileName({
+    required String filename
+  }) async {
+    assert(_initialized, 'plugin flutter_downloader is not initialized');
+
+
+    final escapedFilename = filename.replaceAll("'", "''");
+    final tasks= await loadTasksWithRawQuery(query: "SELECT * FROM task WHERE  filename = '$escapedFilename' ");
+
+    if(tasks?.isNotEmpty==true){
+
+      return checkFile(taskId: tasks!.first.taskId);
+
+
+    }else{
+      return false;
+    }
+
+  }
+
+
   /// Opens the file downloaded by download task with [taskId]. Returns true if
   /// the downloaded file can be opened, false otherwise.
   ///
