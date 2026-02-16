@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.provider.BaseColumns
+import android.util.Log
 
 class TaskDao(private val dbHelper: TaskDbHelper) {
     private val projection = arrayOf(
