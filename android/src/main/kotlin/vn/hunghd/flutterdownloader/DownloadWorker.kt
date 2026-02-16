@@ -453,6 +453,7 @@ class DownloadWorker(context: Context, params: WorkerParameters) :
                         if (intent != null) {
                             log("Setting an intent to open the file $savedFilePath")
                             taskDao!!.updateTaskPath(id.toString(),savedFilePath)
+                            log("Setting an intent to open the file updateTaskPath")
 
                             val flags: Int =
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE else PendingIntent.FLAG_CANCEL_CURRENT

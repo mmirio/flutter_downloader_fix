@@ -125,6 +125,8 @@ class TaskDao(private val dbHelper: TaskDbHelper) {
     }
 
     fun updateTaskPath(taskId: String, downloadedFilePath: String) {
+        Log.d("DownloadWorker", "updateTaskPath $downloadedFilePath")
+
         val db = dbHelper.writableDatabase
         val values = ContentValues()
         values.put(TaskEntry.COLUMN_NAME_TASK_ID, taskId)
@@ -138,7 +140,9 @@ class TaskDao(private val dbHelper: TaskDbHelper) {
                 arrayOf(taskId)
             )
             db.setTransactionSuccessful()
+            Log.d("DownloadWorker", "updateTaskPath  finish $downloadedFilePath")
         } catch (e: Exception) {
+            Log.d("DownloadWorker", "updateTaskPath  Exception $e")
             e.printStackTrace()
         } finally {
             db.endTransaction()
