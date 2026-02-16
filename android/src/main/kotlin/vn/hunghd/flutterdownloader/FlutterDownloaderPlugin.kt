@@ -392,7 +392,8 @@ class FlutterDownloaderPlugin : MethodChannel.MethodCallHandler, FlutterPlugin {
                 if (filename == null) {
                     filename = task.url.substring(task.url.lastIndexOf("/") + 1, task.url.length)
                 }
-                val saveFilePath = task.savedDir + File.separator + filename
+
+                val saveFilePath = task.downloadedFilePath ?:  (task.savedDir + File.separator + filename)
                 val tempFile = File(saveFilePath)
                 if (tempFile.exists()) {
                     try {
