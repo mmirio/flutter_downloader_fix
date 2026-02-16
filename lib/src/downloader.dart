@@ -366,7 +366,7 @@ class FlutterDownloader {
 
     final escapedFilename = filename.replaceAll("'", "''");
     final tasks = await loadTasksWithRawQuery(
-        query: "SELECT * FROM task WHERE  filename = '$escapedFilename' ");
+        query: "SELECT * FROM task WHERE file_name = '$escapedFilename' ");
 
     if (tasks?.isNotEmpty == true) {
       var task = tasks!.first;
