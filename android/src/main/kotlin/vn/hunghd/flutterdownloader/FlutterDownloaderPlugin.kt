@@ -366,6 +366,8 @@ class FlutterDownloaderPlugin : MethodChannel.MethodCallHandler, FlutterPlugin {
         }
         val saveFilePath = task.downloadedFilePath ?: (savedDir + File.separator + filename)
 
+        Log.d("DownloadWorker", "Open intent to open the task.downloadedFilePat $task.downloadedFilePat")
+
         Log.d("DownloadWorker", "Open intent to open the file $saveFilePath")
         val intent: Intent? =
             IntentUtils.validatedFileIntent(requireContext(), saveFilePath, task.mimeType)
