@@ -60,7 +60,7 @@ object IntentUtils {
             intent = buildIntent(context, file, mime)
             if (canBeHandled(context, intent)) return intent
         }
-        return null
+        return intent
     }
 
     private fun canBeHandled(context: Context, intent: Intent): Boolean {
