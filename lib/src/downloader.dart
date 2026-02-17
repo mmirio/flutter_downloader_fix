@@ -361,6 +361,7 @@ class FlutterDownloader {
     return result ?? false;
   }
 
+
   static Future<DownloadTask?> checkFileNameAllTasks({required String filename}) async {
     assert(_initialized, 'plugin flutter_downloader is not initialized');
 
