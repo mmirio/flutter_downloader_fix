@@ -361,6 +361,24 @@ class FlutterDownloader {
     return result ?? false;
   }
 
+  static Future<DownloadTask?> checkFileNameAllTasks({required String filename}) async {
+    assert(_initialized, 'plugin flutter_downloader is not initialized');
+
+    final escapedFilename = filename.replaceAll("'", "''");
+    final tasks = await loadTasksWithRawQuery(
+        query: "SELECT * FROM task WHERE file_name = '$escapedFilename' ");
+
+    if (tasks?.isNotEmpty == true) {
+      for (var task in tasks!) {
+        if (await checkFile(taskId: task.taskId)) {
+          return task;
+        }
+      }
+    }
+
+    return null;
+  }
+
   static Future<DownloadTask?> checkFileName({required String filename}) async {
     assert(_initialized, 'plugin flutter_downloader is not initialized');
 
