@@ -391,6 +391,7 @@ class DownloadWorker(context: Context, params: WorkerParameters) :
                         savedFilePath = getMediaStoreEntryPathApi29(uri!!)
                         outputStream = context.contentResolver.openOutputStream(uri, "w")
                     } else {
+
                         val file = createFileInAppSpecificDir(actualFilename!!, savedDir)
                         savedFilePath = file!!.path
                         outputStream = FileOutputStream(file, false)
@@ -444,7 +445,8 @@ class DownloadWorker(context: Context, params: WorkerParameters) :
                         }
                     }
                     if (clickToOpenDownloadedFile) {
-                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q && storage != PackageManager.PERMISSION_GRANTED) return
+                       // if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q && storage != PackageManager.PERMISSION_GRANTED) return
+
                         val intent = IntentUtils.validatedFileIntent(
                             applicationContext,
                             savedFilePath!!,
